@@ -1,6 +1,20 @@
 import { test, expect } from '@playwright/test';
 import { PlaywrightDevPage } from "../PageObjects/playwright-dev-page"
 
+test.afterEach(async ({ page }) => {
+  page.on('console', msg => {
+    if (msg.type() === 'error')
+      console.log(`Error text: "${msg.text()}"`);
+  });
+
+  console.log(`Finished ${test.info().title} with status ${test.info().status}`);
+
+  if (test.info().status !== test.info().expectedStatus)
+    console.log(`Did not run as expected, ended up at ${page.url()}`);
+
+})
+
+
 test('Getting started should contain table of contents', async ({ page }) => {
   const playwrightDev = new PlaywrightDevPage(page);
   await playwrightDev.goto();
