@@ -1,5 +1,5 @@
 import { expect, type Locator, type Page } from "@playwright/test";
-import defineConfig from "../../playwright.config.ts";
+//import defineConfig from "../../playwright.config.ts";
 
 export class PlaywrightDevPage {
   readonly page: Page;
@@ -23,10 +23,12 @@ export class PlaywrightDevPage {
   }
 
   async goto() {
+    /*
     const baseURL = defineConfig?.use?.baseURL;
     if (!baseURL)
       throw new Error("baseURL is not defined in playwright.config.ts");
-    await this.page.goto(baseURL);
+    */
+    await this.page.goto('');
     await this.page.waitForURL(/playwright.dev/);
   }
 

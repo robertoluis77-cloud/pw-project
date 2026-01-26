@@ -3,6 +3,7 @@
     "playwright": "^1.57.0"
   },
   "devDependencies": {
+    "@lariat/playwright": "^2.2.0",
     "@playwright/test": "^1.57.0",
     "@types/node": "^25.0.9"
   },
