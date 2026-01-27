@@ -4,6 +4,7 @@ import Collection from "@lariat/playwright"
 export class SandboxAutomationTesting extends Collection {
 
     readonly browserPage: Page;
+
     readonly botones: {
         dinamico: Locator;
         enviar: Locator;
@@ -21,12 +22,16 @@ export class SandboxAutomationTesting extends Collection {
         helado: Locator;
         torta: Locator;
     };
+
     readonly textBox: Locator;
+
     readonly radioButtons: {
         si: Locator;
         no: Locator;
     };
+
     readonly dropDwon: Locator;
+
     readonly opcionesDropDown: {
         futbol: Locator;
         tennis: Locator;
@@ -51,10 +56,10 @@ export class SandboxAutomationTesting extends Collection {
 
         this.checkBoxes = {
             pizza: this.browserPage.getByRole('checkbox', { name: 'Pizza 🍕' }),
-            hamburgersa: this.browserPage.getByRole('checkbox', { name: /^Hamburgesa */ }),
-            pasta: this.browserPage.getByRole('checkbox', { name: /^Pasta */ }),
-            helado: this.browserPage.getByRole('checkbox', { name: /^Helado */ }),
-            torta: this.browserPage.getByRole('checkbox', { name: /^Torta */ })
+            hamburgersa: this.browserPage.getByRole('checkbox', { name: 'Hamburguesa 🍔' }),
+            pasta: this.browserPage.getByRole('checkbox', { name: 'Pasta 🍝' }),
+            helado: this.browserPage.getByRole('checkbox', { name: 'Helado 🍧' }),
+            torta: this.browserPage.getByRole('checkbox', { name: 'Torta 🍰' })
         };
 
         this.textBox = this.browserPage.getByRole('textbox', { name: 'Un aburrido texto' })

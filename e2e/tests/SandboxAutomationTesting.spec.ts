@@ -50,21 +50,70 @@ test.describe('@Sandbox Automation Testing web elements', () => {
 
     })
 
-    test('Test 2', async ({ page }) => {
+    test('Testing @TextBox', async ({ page }) => {
 
         const sbTestingPage = new SandboxAutomationTesting(page);
 
-        await test.step('@Accessing to Sandbox Automation Testing Web elements page', async () => {
+        await test.step('Checking testbox is editable', async () => {
 
             await sbTestingPage.goto();
-            await sbTestingPage.page.screenshot({ path: './SandboxAutomationScreensShots/screenshots/screenshot11.png' });
-            await test.info().attach('Sandbox Automation Testing Page Screenshot for Test 2', {
+            //await sbTestingPage.page.screenshot({ path: './SandboxAutomationScreensShots/screenshots/screenshot11.png' });
+            await expect(sbTestingPage.textBox).toBeEditable();
+            await sbTestingPage.textBox.fill('Este es un texto de prueba');
+            await expect(sbTestingPage.textBox).toHaveValue('Este es un texto de prueba');
+            //await sbTestingPage.page.screenshot({ path: './SandboxAutomationScreensShots/screenshots/screenshot13.png' });
+            await test.info().attach('Sandbox Automation Testing Page Screenshot for text box with text', {
                 body: await sbTestingPage.page.screenshot(),
                 contentType: 'image/png',
             });
         })
     })
 
+    test('Testing @CheckBoxes', async ({ page }) => {
+
+        const sbTestingPage = new SandboxAutomationTesting(page);
+        await sbTestingPage.goto();
+
+        for (const checkBoxName in sbTestingPage.checkBoxes) {
+            const checkBox = sbTestingPage.checkBoxes[checkBoxName as keyof typeof sbTestingPage.checkBoxes];
+
+            await test.step('Checking CheckBoxes can be checked and unchecked for ' + checkBox, async () => {
+                await checkBox.check();
+                await expect(checkBox).toBeChecked();
+                await test.info().attach('Sandbox Automation Testing Page Screenshot for checkbox checked', {
+                    body: await sbTestingPage.page.screenshot(),
+                    contentType: 'image/png',
+                });
+                await checkBox.uncheck();
+                await expect(checkBox).not.toBeChecked();
+                await test.info().attach('Sandbox Automation Testing Page Screenshot for for checkbox un-checked', {
+                    body: await sbTestingPage.page.screenshot(),
+                    contentType: 'image/png',
+                });
+            })
+        }
+    })
+
+    test('Testing @RadioButtons', async ({ page }) => {
+
+        const sbTestingPage = new SandboxAutomationTesting(page);
+        await sbTestingPage.goto();
+
+        for (const radioButton in sbTestingPage.radioButtons) {
+            const checkBox = sbTestingPage.radioButtons[radioButton as keyof typeof sbTestingPage.radioButtons];
+
+            await test.step('Checking radioButtons can be checked and unchecked for ' + checkBox, async () => {
+                await checkBox.check();
+                await expect(checkBox, 'Radio Button expected to be checked').toBeChecked();
+                await test.info().attach('Sandbox Automation Testing Page Screenshot for checkbox checked', {
+                    body: await sbTestingPage.page.screenshot(),
+                    contentType: 'image/png',
+                });
+            })
+        }
+
+
+    })
 
 
 })
