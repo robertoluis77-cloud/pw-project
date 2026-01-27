@@ -115,5 +115,64 @@ test.describe('@Sandbox Automation Testing web elements', () => {
 
     })
 
+    test('Testing @DropDownOptions', async ({ page }) => {
+
+        const sbTestingPage = new SandboxAutomationTesting(page);
+        await sbTestingPage.goto();
+        const optionText = ["Tennis", "Fútbol", "Basketball"];
+
+        for (const DropdownOption in optionText) {
+            //const checkBox = sbTestingPage.opcionesDropDown[DropdownOptions as keyof typeof sbTestingPage.opcionesDropDown];
+
+            await test.step('Checking dropdown options can be selected for this option ' + optionText[DropdownOption], async () => {
+                console.log('Selecting option: ' + optionText[DropdownOption]);
+                
+                await sbTestingPage.dropDwon.selectOption(optionText[DropdownOption]);
+                //await checkBox.click();
+                //await page.$('select#formBasicSelect > option:is(:text("Tennis"))').click();
+                //await expect(checkBox, 'Radio Button expected to be checked').toBeChecked();
+                await test.info().attach('Sandbox Automation Testing Page Screenshot for dropdowns', {
+                    body: await sbTestingPage.page.screenshot(),
+                    contentType: 'image/png',
+                });
+                await await sbTestingPage.page.waitForTimeout(3000);
+                await sbTestingPage.botones.enviar.click();
+
+            })
+        }
+
+
+    })
+
+
+    test('Testing @Tables', async ({ page }) => {
+
+        const sbTestingPage = new SandboxAutomationTesting(page);
+        await sbTestingPage.goto();
+
+        for (const tables in sbTestingPage.tables) {
+            const checkBox = sbTestingPage.tables[tables as keyof typeof sbTestingPage.tables];
+
+            await test.step('Checking data from tables ' + checkBox, async () => {
+                await sbTestingPage.dropDwon.click();
+                const cells = await checkBox.locator('tbody tr td');
+                const valoresTablaDinamica = await sbTestingPage.page.$$eval('h2:has-text("Tabla dinámica") + table tbody tr td', elements => elements.map(element => element.textContent));
+                console.log(valoresTablaDinamica);
+                const valoresTablaStatica = await sbTestingPage.page.$$eval('h2:has-text("Tabla estática") + table tbody tr td', elements => elements.map(element => element.textContent));
+                console.log(valoresTablaStatica);
+                await sbTestingPage.page.reload();
+                
+                //console.log(`Contents of ${tables} table:`, cells);
+                await test.info().attach('Sandbox Automation Testing Page Screenshot for tables', {
+                    body: await sbTestingPage.page.screenshot(),
+                    contentType: 'image/png',
+                });
+
+            })
+        }
+
+
+    })
+
 
 })

@@ -71,21 +71,27 @@ export class SandboxAutomationTesting extends Collection {
             no: this.browserPage.getByRole('radio', { name: 'No' })
         };
 
-        this.dropDwon = this.browserPage.getByLabel('Dropdown');
+        this.dropDwon = this.browserPage.locator('#formBasicSelect');
+
 
         this.opcionesDropDown = {
             futbol: this.dropDwon.getByRole('option', { name: 'Fútbol' }),
             tennis: this.dropDwon.getByRole('option', { name: 'Tennis' }),
+            //tennis: this.browserPage.locator('select#formBasicSelect > option:is(:text("Tennis"))'),
             basket: this.dropDwon.getByRole('option', { name: 'Basket' })
         };
 
         this.tables = {
-            dinamica: this.browserPage.getByRole('heading', { name: 'Tabla dinámica' })
-                .filter({ has: this.browserPage.getByRole('table') })
-                .getByRole('cell'),
+
+            //dinamica = this.browserPage.$$eval('h2:has-text("Tabla dinámica") + table tbody tr td', elements => elements.map(element => element.textContent))
+
+            
+            dinamica: this.browserPage.getByRole('heading', { name: 'Tabla dinámica' }).getByRole('table'),
             static: this.browserPage.getByRole('heading', { name: 'Tabla estática' })
                 .filter({ has: this.browserPage.getByRole('table') })
                 .getByRole('cell')
+
+            
         };
     }
 
@@ -95,6 +101,7 @@ export class SandboxAutomationTesting extends Collection {
     if (!baseURL)
       throw new Error("baseURL is not defined in playwright.config.ts");
     */
+    //await this.browserPage.setViewportSize({ width: 1800, height: 974 });
     await this.browserPage.goto('https://thefreerangetester.github.io/sandbox-automation-testing/');
     await this.page.waitForURL(/sandbox-automation-testing/);
   }
