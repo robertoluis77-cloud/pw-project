@@ -12,6 +12,9 @@ test.afterEach(async ({ page }) => {
     if (test.info().status !== test.info().expectedStatus)
         console.log(`Did not run as expected, ended up at ${page.url()}`);
 
+    const sbTestingPage = new SandboxAutomationTesting(page);
+    await sbTestingPage.close();
+
 })
 
 test.describe('@Sandbox Automation Testing web elements', () => {
@@ -200,6 +203,34 @@ test.describe('@Sandbox Automation Testing web elements', () => {
 
             })
         }
+
+
+    })
+
+
+    test('Testing @PopUp elemnts', async ({ page }) => {
+
+        const sbTestingPage = new SandboxAutomationTesting(page);
+        await sbTestingPage.goto();
+
+        await test.step('Checking PopUp display and close', async () => {
+            await sbTestingPage.botones.mostrarPopUp.click();
+            const popUpTitle = await sbTestingPage.page.getByText('Popup de ejemplo');
+            const popUpBody = await sbTestingPage.page.getByText('¿Viste? ¡Apareció un Pop-up!');
+            await expect(popUpTitle).toBeVisible();
+            await expect(popUpBody).toBeVisible();
+            await test.info().attach('Sandbox Automation Testing Page Screenshot for PopUp displayed', {
+                body: await sbTestingPage.page.screenshot(),
+                contentType: 'image/png',
+            });
+            await sbTestingPage.page.waitForTimeout(2000);
+            await sbTestingPage.botones.cerrrarPopUp.click();
+            await expect(popUpTitle).not.toBeVisible();
+            await test.info().attach('Sandbox Automation Testing Page Screenshot for PopUp closed', {
+                body: await sbTestingPage.page.screenshot(),
+                contentType: 'image/png',
+            });
+        })
 
 
     })
