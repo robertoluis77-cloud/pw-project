@@ -208,12 +208,16 @@ test.describe('@Sandbox Automation Testing web elements', () => {
     })
 
 
-    test('Testing @PopUp elemnts', async ({ page }) => {
+    test('Testing @PopUp elemnts and ShwonDOM element', async ({ page }) => {
 
         const sbTestingPage = new SandboxAutomationTesting(page);
         await sbTestingPage.goto();
 
         await test.step('Checking PopUp display and close', async () => {
+            const shwonelement = await sbTestingPage.page.getByText('Este es un ejemplo de Shadow DOM para practicar automation testing.');
+            await expect(shwonelement).toBeVisible();
+
+            
             await sbTestingPage.botones.mostrarPopUp.click();
             const popUpTitle = await sbTestingPage.page.getByText('Popup de ejemplo');
             const popUpBody = await sbTestingPage.page.getByText('¿Viste? ¡Apareció un Pop-up!');
