@@ -1,7 +1,11 @@
 import { test, expect } from '@playwright/test';
+import dotenv from 'dotenv';
+import path from 'path';
+dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 const REPO = 'robertoluis77-repo';
 const USER = 'robertoluis77-cloud';
+const TOKEN = process.env.GITHUB_TOKEN;
 
 // El contexto de la solicitud es reutilizado por todas las pruebas en el archivo.
 let apiContext: any;
@@ -15,7 +19,7 @@ test.beforeAll(async ({ playwright }) => {
             'Accept': 'application/vnd.github.v3+json',
             // Agregamos el token de autorización a todos los requests.
             // Acá ponemos el token que generamos en GitHub.
-            'Authorization': `Bearer ${process.env.GITHUB_TOKEN}`,
+            'Authorization': `Bearer ${TOKEN}`,
         },
     });
 
