@@ -10,6 +10,7 @@ export class SandboxAutomationTesting extends Collection {
         enviar: Locator;
         diaDelaSemana: Locator;
         mostrarPopUp: Locator;
+        cerrrarPopUp: Locator;
 
     };
 
@@ -51,7 +52,8 @@ export class SandboxAutomationTesting extends Collection {
             dinamico: this.browserPage.getByRole('button', { name: 'Hacé click para generar un ID' }),
             enviar: this.browserPage.getByRole('button', { name: 'Enviar' }),
             diaDelaSemana: this.browserPage.getByRole('button', { name: 'Día de la semana' }),
-            mostrarPopUp: this.browserPage.getByRole('button', { name: 'Mostrar popup' })
+            mostrarPopUp: this.browserPage.getByRole('button', { name: 'Mostrar popup' }),
+            cerrrarPopUp: this.browserPage.getByRole('button', { name: 'Cerrar' })
         };
 
         this.checkBoxes = {
@@ -107,7 +109,7 @@ export class SandboxAutomationTesting extends Collection {
   }
 
   async close() {
-    await this.browserPage.close();
+    await this.page.close();
   }
 
 

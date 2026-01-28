@@ -41,6 +41,11 @@ export default defineConfig({
 
     //viewport: null, 
 
+    //trace: 'on',
+
+    video: 'on',
+
+
     // Pass the --start-maximized argument to the browser launch options
     launchOptions: {
       args: ["--start-fullscreen"],

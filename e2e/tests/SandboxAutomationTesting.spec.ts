@@ -121,6 +121,8 @@ test.describe('@Sandbox Automation Testing web elements', () => {
         await sbTestingPage.goto();
         const optionText = ["Tennis", "Fútbol", "Basketball"];
 
+
+        //look this for has in so index needs to be used
         for (const DropdownOption in optionText) {
             //const checkBox = sbTestingPage.opcionesDropDown[DropdownOptions as keyof typeof sbTestingPage.opcionesDropDown];
 
@@ -164,6 +166,34 @@ test.describe('@Sandbox Automation Testing web elements', () => {
                 
                 //console.log(`Contents of ${tables} table:`, cells);
                 await test.info().attach('Sandbox Automation Testing Page Screenshot for tables', {
+                    body: await sbTestingPage.page.screenshot(),
+                    contentType: 'image/png',
+                });
+
+            })
+        }
+
+
+    })
+
+
+    test('Testing @HyperLinks as dropdown options', async ({ page }) => {
+
+        const sbTestingPage = new SandboxAutomationTesting(page);
+        await sbTestingPage.goto();
+        const diasDeLaSemana = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
+        
+        //look this for has of so no index needs to be used
+        for (const dia of diasDeLaSemana) {
+            await test.step('Checking selecting this day: ' + dia, async () => {
+                await sbTestingPage.botones.diaDelaSemana.click();
+                await sbTestingPage.page.waitForTimeout(2000);
+                console.log("dia seleccionado: " + dia);
+                const HyperLinksLunes = await sbTestingPage.page.getByRole('link', { name: dia });
+                await HyperLinksLunes.click();
+                
+                //console.log(`Contents of ${tables} table:`, cells);
+                await test.info().attach('Sandbox Automation Testing Page Screenshot for hyperlinks', {
                     body: await sbTestingPage.page.screenshot(),
                     contentType: 'image/png',
                 });
