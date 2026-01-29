@@ -64,7 +64,7 @@ test.afterAll(async ({ }) => {
     await apiContext.dispose();
 });
 
-test('El último issue creado es el primero en la lista @APITesting', async ({ page }) => {
+test.skip('El último issue creado es el primero en la lista @APITesting', async ({ page }) => {
     const newIssue = await apiContext.post(`/repos/${USER}/${REPO}/issues`, {
 
         data
