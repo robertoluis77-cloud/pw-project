@@ -6,12 +6,14 @@ dotenv.config({ path: path.resolve(__dirname, '.env') });
 const REPO = 'robertoluis77-repo';
 const USER = 'robertoluis77-cloud';
 const TOKEN = process.env.GITHUB_TOKEN;
-const postRequest = {
-    data: {
-        title: '[Feature] Que el framework me planche la ropa 2'
-        //body: 'Estaría buenísimo que el repo haga helados 🍦'
 
-    }
+const data = {
+
+    title: '[Feature] Que el framework me planche la ropa 2',
+    body: 'Estaría buenísimo que el repo haga helados 🍦',
+    labels: ['Feature']
+
+
 };
 
 const getResponse = {
@@ -61,13 +63,7 @@ test.afterAll(async ({ }) => {
 
 test.skip('El último issue creado es el primero en la lista @APITesting', async ({ page }) => {
     const newIssue = await apiContext.post(`/repos/${USER}/${REPO}/issues`, {
-        //postRequest
-
-        data: {
-            title: '[Feature] Que el framework me planche la ropa 2',
-            body: 'Estaría buenísimo que el repo haga helados 🍦'
-
-        }
+        data
     });
     console.log('New Issues creados response: ', await newIssue.json());
     expect(newIssue.ok()).toBeTruthy();
