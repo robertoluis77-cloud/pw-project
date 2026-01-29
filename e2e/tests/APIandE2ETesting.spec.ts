@@ -6,6 +6,21 @@ dotenv.config({ path: path.resolve(__dirname, '.env') });
 const REPO = 'robertoluis77-repo';
 const USER = 'robertoluis77-cloud';
 const TOKEN = process.env.GITHUB_TOKEN;
+const postRequest = {
+    data: {
+        title: '[Feature] Que el framework me planche la ropa 2'
+        //body: 'Estaría buenísimo que el repo haga helados 🍦'
+
+    }
+};
+
+const getResponse = {
+
+    title: '[Feature] Que el framework me planche la ropa 2',
+    body: 'Estaría buenísimo que el repo haga helados 🍦'
+
+
+};
 
 // El contexto de la solicitud es reutilizado por todas las pruebas en el archivo.
 let apiContext: any;
@@ -46,18 +61,31 @@ test.afterAll(async ({ }) => {
 
 test('El último issue creado es el primero en la lista @APITesting', async ({ page }) => {
     const newIssue = await apiContext.post(`/repos/${USER}/${REPO}/issues`, {
+        //postRequest
+
         data: {
             title: '[Feature] Que el framework me planche la ropa 2',
+            body: 'Estaría buenísimo que el repo haga helados 🍦'
+
         }
     });
+    console.log('New Issues creados response: ', await newIssue.json());
     expect(newIssue.ok()).toBeTruthy();
+    const createdIssue = await newIssue.json();;
+    console.log('********Issues creado: ', createdIssue.number);
 
-    const issues = await apiContext.get(`/repos/${USER}/${REPO}/issues`);
+    await page.waitForTimeout(2000);
+
+    const issues = await apiContext.get(`/repos/${USER}/${REPO}/issues/` + createdIssue.number);
     expect(issues.ok()).toBeTruthy();
-    expect(await issues.json()).toContainEqual(expect.objectContaining({
-        title: '[Feature] Que el framework me planche la ropa 2',
-        //body: 'Estaría buenísimo que el repo haga helados 🍦'
-    }));
+    console.log('New Issues creados GET response: ', await issues.json());
+    const issueData = await issues.json();
+    expect(issueData.title).toBe(getResponse.title);
+    expect(issueData.body).toBe(getResponse.body);
+    expect(issueData.number).toBe(createdIssue.number);
+    expect(issueData).toEqual(expect.objectContaining(getResponse));
+    //expect(await issues.json()).toContainEqual(expect.objectContaining({ number: createdIssue.number }));
+
 
     await page.goto(`https://github.com/${USER}/${REPO}/issues`);
     //await page.reload();
