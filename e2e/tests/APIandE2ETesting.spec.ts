@@ -1,18 +1,23 @@
 import { test, expect } from '@playwright/test';
 import dotenv from 'dotenv';
 import path from 'path';
+
 dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 const REPO = 'robertoluis77-repo';
 const USER = 'robertoluis77-cloud';
 const TOKEN = process.env.GITHUB_TOKEN;
-const postRequest = {
-    data: {
-        title: '[Feature] Que el framework me planche la ropa 2'
-        //body: 'Estaría buenísimo que el repo haga helados 🍦'
 
-    }
+const data: any = {
+    title: '[Feature] Que el framework me planche la ropa 2',
+    body: 'Estaría buenísimo que el repo haga helados 🍦',
+    labels: ['Feature']
 };
+
+
+
+
+console.log('data: ', data);
 
 const getResponse = {
 
@@ -47,7 +52,7 @@ test.beforeAll(async ({ playwright }) => {
     expect(response.ok()).toBeTruthy();
     */
 
-    //console.log('prccess.env.GITHUB_TOKEN: ', process.env.GITHUB_TOKEN);
+    console.log('prccess.env.GITHUB_TOKEN: ', TOKEN);
 });
 
 test.afterAll(async ({ }) => {
@@ -61,13 +66,17 @@ test.afterAll(async ({ }) => {
 
 test('El último issue creado es el primero en la lista @APITesting', async ({ page }) => {
     const newIssue = await apiContext.post(`/repos/${USER}/${REPO}/issues`, {
-        //postRequest
 
+        data
+        /*
         data: {
             title: '[Feature] Que el framework me planche la ropa 2',
-            body: 'Estaría buenísimo que el repo haga helados 🍦'
+            body: 'Estaría buenísimo que el repo haga helados 🍦',
+            labels: ['Feature']
 
         }
+        */
+
     });
     console.log('New Issues creados response: ', await newIssue.json());
     expect(newIssue.ok()).toBeTruthy();
