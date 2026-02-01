@@ -1,0 +1,5 @@
+﻿username,ErrorMsg,ErrorMsgDisplayed
+12,username is to short,true
+123,username,false
+testuser20testuser20,username,false
+testuser20testuser200,email or password is invalid,true

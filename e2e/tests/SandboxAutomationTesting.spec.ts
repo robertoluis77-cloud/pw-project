@@ -2,10 +2,17 @@ import { test, expect } from '@playwright/test';
 import { SandboxAutomationTesting } from "../PageObjects/sandbox-automation-testing.page"
 
 test.afterEach(async ({ page }) => {
+    const errors: String[] = [];
     page.on('console', msg => {
-        if (msg.type() === 'error')
-            console.log(`Error text: "${msg.text()}"`);
+
+
+        if (msg.type() === 'error') {
+            console.log(`Console Error text: "${msg.text()}"`);
+            errors.push(msg.text());
+        }
     });
+
+    await expect(errors).toHaveLength(0);
 
     console.log(`Finished ${test.info().title} with status ${test.info().status}`);
 
@@ -13,7 +20,7 @@ test.afterEach(async ({ page }) => {
         console.log(`Did not run as expected, ended up at ${page.url()}`);
 
     const sbTestingPage = new SandboxAutomationTesting(page);
-    await sbTestingPage.close();
+    //await sbTestingPage.close();
 
 })
 
@@ -26,11 +33,11 @@ test.describe('@Sandbox Automation Testing web elements', () => {
         })
             */
 
-    test('@Accessing to dinamic button', async ({ page }) => {
+    test('Accessing to @dinamic button', async ({ page }) => {
 
         const sbTestingPage = new SandboxAutomationTesting(page);
 
-        await test.step('@Accessing to Sandbox Automation Testing Web elements page', async () => {
+        await test.step('Accessing to Sandbox Automation Testing Web elements page', async () => {
 
             await sbTestingPage.goto();
             await sbTestingPage.page.screenshot({ path: './SandboxAutomationScreensShots/screenshots/screenshot11.png' });
@@ -42,7 +49,8 @@ test.describe('@Sandbox Automation Testing web elements', () => {
 
         await test.step('Clicking on dinamic button', async () => {
 
-            await sbTestingPage.botones.dinamico.click();
+            //await sbTestingPage.botones.dinamico.click();
+            await sbTestingPage.clickDynamicButton();
             await expect(sbTestingPage.botonDinamicoText).toBeVisible();
             await sbTestingPage.page.screenshot({ path: './SandboxAutomationScreensShots/screenshots/screenshot12.png' });
             await test.info().attach('Sandbox Automation Testing Page Screenshot showing dinamic button text', {
@@ -131,7 +139,7 @@ test.describe('@Sandbox Automation Testing web elements', () => {
 
             await test.step('Checking dropdown options can be selected for this option ' + optionText[DropdownOption], async () => {
                 console.log('Selecting option: ' + optionText[DropdownOption]);
-                
+
                 await sbTestingPage.dropDwon.selectOption(optionText[DropdownOption]);
                 //await checkBox.click();
                 //await page.$('select#formBasicSelect > option:is(:text("Tennis"))').click();
@@ -166,7 +174,7 @@ test.describe('@Sandbox Automation Testing web elements', () => {
                 const valoresTablaStatica = await sbTestingPage.page.$$eval('h2:has-text("Tabla estática") + table tbody tr td', elements => elements.map(element => element.textContent));
                 console.log(valoresTablaStatica);
                 await sbTestingPage.page.reload();
-                
+
                 //console.log(`Contents of ${tables} table:`, cells);
                 await test.info().attach('Sandbox Automation Testing Page Screenshot for tables', {
                     body: await sbTestingPage.page.screenshot(),
@@ -185,7 +193,7 @@ test.describe('@Sandbox Automation Testing web elements', () => {
         const sbTestingPage = new SandboxAutomationTesting(page);
         await sbTestingPage.goto();
         const diasDeLaSemana = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
-        
+
         //look this for has of so no index needs to be used
         for (const dia of diasDeLaSemana) {
             await test.step('Checking selecting this day: ' + dia, async () => {
@@ -194,7 +202,7 @@ test.describe('@Sandbox Automation Testing web elements', () => {
                 console.log("dia seleccionado: " + dia);
                 const HyperLinksLunes = await sbTestingPage.page.getByRole('link', { name: dia });
                 await HyperLinksLunes.click();
-                
+
                 //console.log(`Contents of ${tables} table:`, cells);
                 await test.info().attach('Sandbox Automation Testing Page Screenshot for hyperlinks', {
                     body: await sbTestingPage.page.screenshot(),
@@ -217,7 +225,7 @@ test.describe('@Sandbox Automation Testing web elements', () => {
             const shwonelement = await sbTestingPage.page.getByText('Este es un ejemplo de Shadow DOM para practicar automation testing.');
             await expect(shwonelement).toBeVisible();
 
-            
+
             await sbTestingPage.botones.mostrarPopUp.click();
             const popUpTitle = await sbTestingPage.page.getByText('Popup de ejemplo');
             const popUpBody = await sbTestingPage.page.getByText('¿Viste? ¡Apareció un Pop-up!');

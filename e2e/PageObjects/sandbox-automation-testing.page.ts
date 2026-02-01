@@ -1,6 +1,18 @@
-import { expect, type Locator, type Page } from "@playwright/test"
+import { test, expect, type Locator, type Page } from "@playwright/test"
 import Collection from "@lariat/playwright"
 
+
+// Leveraging TypeScript decorators to wrap functions
+// https://www.typescriptlang.org/docs/handbook/decorators.html
+// A boxed test.step() gets defined with the name of the method
+function boxedStep(target: Function, context: ClassMethodDecoratorContext) {
+    return function replacementMethod(this: { constructor: { name: string } }, ...args: any) {
+        const name = this.constructor.name + '.' + (context.name as string);
+        return test.step(name, async () => {
+            return await target.call(this, ...args);
+        }, { box: true });  // Note the "box" option here.
+    };
+}
 export class SandboxAutomationTesting extends Collection {
 
     readonly browserPage: Page;
@@ -87,30 +99,34 @@ export class SandboxAutomationTesting extends Collection {
 
             //dinamica = this.browserPage.$$eval('h2:has-text("Tabla dinámica") + table tbody tr td', elements => elements.map(element => element.textContent))
 
-            
+
             dinamica: this.browserPage.getByRole('heading', { name: 'Tabla dinámica' }).getByRole('table'),
             static: this.browserPage.getByRole('heading', { name: 'Tabla estática' })
                 .filter({ has: this.browserPage.getByRole('table') })
                 .getByRole('cell')
 
-            
+
         };
     }
 
     async goto() {
-    /*
-    const baseURL = defineConfig?.use?.baseURL;
-    if (!baseURL)
-      throw new Error("baseURL is not defined in playwright.config.ts");
-    */
-    //await this.browserPage.setViewportSize({ width: 1800, height: 974 });
-    await this.browserPage.goto('https://thefreerangetester.github.io/sandbox-automation-testing/');
-    await this.page.waitForURL(/sandbox-automation-testing/);
-  }
+        /*
+        const baseURL = defineConfig?.use?.baseURL;
+        if (!baseURL)
+          throw new Error("baseURL is not defined in playwright.config.ts");
+        */
+        //await this.browserPage.setViewportSize({ width: 1800, height: 974 });
+        await this.browserPage.goto('https://thefreerangetester.github.io/sandbox-automation-testing/');
+        await this.page.waitForURL(/sandbox-automation-testing/);
+    }
 
-  async close() {
-    await this.page.close();
-  }
+    async close() {
+        await this.page.close();
+    }
 
+    @boxedStep
+    async clickDynamicButton() {
+        await this.botones.dinamico.click();
+    }
 
 }
