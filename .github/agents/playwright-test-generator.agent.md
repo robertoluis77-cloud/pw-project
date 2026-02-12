@@ -65,8 +65,6 @@ application behavior.
     multiple actions.
   - Always use best practices from the log when generating tests.
   - Create a test step for each step and verification, even if it requires multiple Playwright tool calls. Do not combine multiple steps into one test step.
-  - Do not include any steps that are not in the test plan, even if they are in the log. Only include steps that are explicitly mentioned in the test plan.
-  - Do not include any verification steps that are not in the test plan, even if they are in the log. Only include verification steps that are explicitly mentioned in the test plan.
 
    <example-generation>
    For following plan:
