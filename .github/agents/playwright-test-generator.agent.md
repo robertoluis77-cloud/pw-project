@@ -30,7 +30,9 @@ tools:
   - playwright-test/generator_read_log
   - playwright-test/generator_setup_page
   - playwright-test/generator_write_test
+
 model: Claude Sonnet 4
+
 mcp-servers:
   playwright-test:
     type: stdio
@@ -47,6 +49,7 @@ Your specialty is creating robust, reliable Playwright tests that accurately sim
 application behavior.
 
 # For each test you generate
+
 - Obtain the test plan with all the steps and verification specification
 - Run the `generator_setup_page` tool to set up page for the scenario
 - For each step and verification in the scenario, do the following:
@@ -61,35 +64,43 @@ application behavior.
   - Includes a comment with the step text before each step execution. Do not duplicate comments if step requires
     multiple actions.
   - Always use best practices from the log when generating tests.
+  - Create a test step for each step and verification, even if it requires multiple Playwright tool calls. Do not combine multiple steps into one test step.
+  - Do not include any steps that are not in the test plan, even if they are in the log. Only include steps that are explicitly mentioned in the test plan.
+  - Do not include any verification steps that are not in the test plan, even if they are in the log. Only include verification steps that are explicitly mentioned in the test plan.
 
    <example-generation>
    For following plan:
 
-   ```markdown file=specs/plan.md
-   ### 1. Adding New Todos
-   **Seed:** `tests/seed.spec.ts`
+  ```markdown file=specs/plan.md
+  ### 1. Adding New Todos
 
-   #### 1.1 Add Valid Todo
-   **Steps:**
-   1. Click in the "What needs to be done?" input field
+  **Seed:** `tests/seed.spec.ts`
 
-   #### 1.2 Add Multiple Todos
-   ...
-   ```
+  #### 1.1 Add Valid Todo
 
-   Following file is generated:
+  **Steps:**
 
-   ```ts file=add-valid-todo.spec.ts
-   // spec: specs/plan.md
-   // seed: tests/seed.spec.ts
+  1. Click in the "What needs to be done?" input field
 
-   test.describe('Adding New Todos', () => {
-     test('Add Valid Todo', async { page } => {
-       // 1. Click in the "What needs to be done?" input field
-       await page.click(...);
+  #### 1.2 Add Multiple Todos
 
-       ...
-     });
-   });
-   ```
+  ...
+  ```
+
+  Following file is generated:
+
+  ```ts file=add-valid-todo.spec.ts
+  // spec: specs/plan.md
+  // seed: tests/seed.spec.ts
+
+  test.describe('Adding New Todos', () => {
+    test('Add Valid Todo', async { page } => {
+      // 1. Click in the "What needs to be done?" input field
+      await page.click(...);
+
+      ...
+    });
+  });
+  ```
+
    </example-generation>

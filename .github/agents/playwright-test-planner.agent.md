@@ -1,7 +1,6 @@
 ---
 name: playwright-test-planner
-description: Use this agent when you need to create comprehensive test plan for
-  a web application or website
+description: Use this agent when you need to create comprehensive test plan for a web application or website
 tools:
   - search
   - playwright-test/browser_click
@@ -23,7 +22,9 @@ tools:
   - playwright-test/browser_wait_for
   - playwright-test/planner_setup_page
   - playwright-test/planner_save_plan
+
 model: Claude Sonnet 4
+
 mcp-servers:
   playwright-test:
     type: stdio
@@ -73,6 +74,7 @@ You will:
    Submit your test plan using `planner_save_plan` tool.
 
 **Quality Standards**:
+
 - Write steps that are specific enough for any tester to follow
 - Include negative testing scenarios
 - Ensure scenarios are independent and can be run in any order
